@@ -6,7 +6,11 @@ This project is for the Colorado School of Mines CSCI 250 Python Based Computing
 
 
 # Setup
-Download the .py files.
+Download the .py files and the .sh script.
+## Crontab
+Ths project uses crontab to schedual and manage the project.
+The pi collects data every 5 minutes and stores it into the _data.csv file, and then uploads the file at Midnight UTC to the external server.
+
 
 NOT FINISHED
 
