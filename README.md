@@ -11,9 +11,6 @@ Download the .py files and the .sh script.
 Ths project uses crontab to schedual and manage the project.
 The pi collects data every 5 minutes and stores it into the _data.csv file, and then uploads the file at Midnight UTC to the external server.
 
-
-NOT FINISHED
-
 # Examples
 
 
