@@ -8,7 +8,7 @@ if [scp ./$FILE $SERVER] then
 	if [ssh $SERVER "cat $FILE >> MASTER$FILE; rm $FILE"]then #append the file to the master list
 		echo "Appending Complete"; rm $FILE #remove the file
 	else
-		echo "$? Error printing Data" > error.log #hopefully this does not happen but generates a very basic error log
+		echo "$? Error printing Data" >> error.log #hopefully this does not happen but generates a very basic error log
 		cat tmpD > $FILE #put the data back into the file 
 	fi	
 else
