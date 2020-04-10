@@ -1,8 +1,10 @@
+#!/bin/bash
 #Uploads the data file
 FILE = "*_data.csv"
 SERVER = "USER@SERVER"
 cat $FILE > tmpD #Backup the data in case the transfer fails
 tail -n +2 $FILE > $FILE #Take out the first line of the file
+#The uploading will probally be diffrent currently it is not that secure
 if [scp ./$FILE $SERVER] then
 	
 	if [ssh $SERVER "cat $FILE >> MASTER$FILE; rm $FILE"]then #append the file to the master list
