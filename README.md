@@ -1,5 +1,5 @@
 # Weather Pi
-This is the various code for the Weather Pi, a "weather" station Raspberry Pi. The Weather Pi records light, temperature and ambient noise every periods and offloads the data nightly at Midnight UTC to a external server for processing.
+This is the various code for the Weather Pi, a "weather" station Raspberry Pi. The Weather Pi records light, temperature and ambient noise periodically and offloads the data nightly at Midnight UTC to a external server for processing.
 
 This project is for the Colorado School of Mines CSCI 250 Python Based Computing course.
 
