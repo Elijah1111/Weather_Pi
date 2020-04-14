@@ -42,7 +42,7 @@ if(not path.exists(fName)):#prints the header if the file does not exist
     flag=True
 
 with open(fName,'a') as f: #open up the file in append mode
-    if(flag):print("Temp,Light,Time",file=f)#print header
+    if(flag):print("Temp,Light,Audio,AudioEnv,Time",file=f)#print header
 
     print(tmp, file=f)#print this in the file
     f.close()
