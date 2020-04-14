@@ -3,8 +3,6 @@ This is the various code for the Weather Pi, a "weather" station Raspberry Pi. T
 
 This project is for the Colorado School of Mines CSCI 250 Python Based Computing course.
 
-Currently unfinished
-
 # Setup
 Download the .py files and the .sh script. Edit the location in the datacapture.py and change the SERVER information in upload.sh 
 ### Crontab
