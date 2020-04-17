@@ -12,7 +12,7 @@ class ClientSocket:
         if not ver:
             print("bad connection try again")
         else:
-            print(ver.decode())
+            return ver.decode()
     def close(self):
         self.conn.close()   #closes the socket
         
