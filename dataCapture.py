@@ -1,13 +1,16 @@
 import time
 import adcUtil as adc
 from os import path
+from client_socket import ClientSocket
 #TODO edit anything with a TODO
 
 #~~~~~~~~~~~~~~~~~~~~Assignment~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+con = ClientSocket()    #establishes a new client socket
 location = "GOLDEN" #TODO Change me based on location
-fName = location+"_data.csv" #set up the file name 
 
+
+con.send(location)  #selects the file to write to
+con.rec()
 tChan = (0,0)#Channel 0, chip 0 Temperature
 lChan = (1,0)#Channel 1, chip 0 Light
 aChan = (0,1)#Channel 0,  chip 1 Audio
@@ -34,17 +37,11 @@ tmp = ("{:.3f},".format(readTemp())+#Record Temperature
         "{:.3f},".format(readLight())+#Record Light
         "{:.3f},".format(readAud())+#Record Audio
         "{:.3f},".format(readEnv())+#Record Audio Envelope
-       "{:.0f}".format(time.time()))#Record time in epoch UTC
+       "{:.0f}".format(time.time()))+'\n'#Record time in epoch UTC
 
 
-flag=False
-if(not path.exists(fName)):#prints the header if the file does not exist
-    flag=True
-
-with open(fName,'a') as f: #open up the file in append mode
-    if(flag):print("Temp,Light,Audio,AudioEnv,Time",file=f)#print header
-
-    print(tmp, file=f)#print this in the file
-    f.close()
+con.send(tmp)
+con.rec()
+con.close()
 
 print("Data Collected")
