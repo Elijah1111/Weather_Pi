@@ -37,4 +37,5 @@ Temp,Light,Audio,AudioEnv,Time
 The initial adcUtil script was written by the course instructors, I modified it to be able to use 2 ADC chips on the Raspberry Pi, course web-page available [here](http://cs-courses.mines.edu/csci250/).
 
 Initial script work - [Elijah1111](https://github.com/Elijah1111)
+
 Socket server wotk -[Liam Morrissey](https://github.com/liam-morrissey)
