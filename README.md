@@ -18,7 +18,7 @@ crontab -e
 Add these lines to cron:
 ```
 */5 * * * * PATH/LOC_data.csv
-* 0 * * * PATH/upload.sh
+* 0 * * * PATH/upload.py
 ```
 Where PATH is the path to the files and LOC is the location you supplied to the capture script.
 These cron jobs run the script every 5 minutes and the upload script at midnight.
