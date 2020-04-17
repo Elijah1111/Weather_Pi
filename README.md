@@ -23,7 +23,14 @@ Add these lines to cron:
 Where PATH is the path to the files and LOC is the location you supplied to the capture script.
 These cron jobs run the script every 5 minutes and the upload script at midnight.
 # Examples/Output
-
+Here is an example of the output csv file.
+Temp,Light,Audio,AudioEnv,Time
+```
+16.774,1.068,0.008,0.042,1587152617
+16.774,1.068,0.005,0.039,1587152618
+16.452,1.068,0.015,0.045,1587152619
+16.774,1.068,0.002,0.042,1587152619
+```
 
 
 # Credit
