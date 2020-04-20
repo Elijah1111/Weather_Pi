@@ -4,7 +4,17 @@ This is the various code for the Weather Pi, a "weather" station Raspberry Pi. T
 This project is for the Colorado School of Mines CSCI 250 Python Based Computing course.
 
 # Setup
-Download the .py files and the .sh script. Edit the location in the datacapture.py and change the SERVER information in upload.sh 
+Download the .py files.
+
+Edit LOC in the dataCapture.py and PATH in both upload.py and dataCapture.py, They are marked with a TODO.
+
+Make upload.py and dataCapture.py executable with chmod.
+```
+chmod 777 upload.py
+chmod 777 dataCapture.py
+```
+Then setup the cron jobs.
+
 ### Crontab
 This project uses crontab to schedule and manage the project.
 The pi collects data every 5 minutes and stores it into the _data.csv file, and then uploads the file at Midnight UTC to the external server.
@@ -17,13 +27,18 @@ crontab -e
 
 Add these lines to cron:
 ```
-*/5 * * * * python3 PATH/dataCapture.py
-* 0 * * * python3 PATH/upload.py
+*/5 * * * * PATH/dataCapture.py
+* 0 * * * PATH/upload.py
 ```
-Where PATH is the path to the files.
+Where PATH is the path to the project.
+For example:
+```
+*/5 * * * * /home/pi/Documents/capstone/dataCapture.py
+```
 These cron jobs run the script every 5 minutes and the upload script at midnight.
 # Examples/Output
 Here is an example of the output csv file.
+
 Temp,Light,Audio,AudioEnv,Time
 ```
 16.774,1.068,0.008,0.042,1587152617
