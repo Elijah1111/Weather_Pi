@@ -17,8 +17,8 @@ crontab -e
 
 Add these lines to cron:
 ```
-*/5 * * * * PATH/dataCapture.py
-* 0 * * * PATH/upload.py
+*/5 * * * * python3 PATH/dataCapture.py
+* 0 * * * python3 PATH/upload.py
 ```
 Where PATH is the path to the files.
 These cron jobs run the script every 5 minutes and the upload script at midnight.
