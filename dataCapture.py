@@ -39,14 +39,7 @@ tmp = ("{:.3f},".format(readTemp())+#Record Temperature
         "{:.3f},".format(readEnv())+#Record Audio Envelope
        "{:.0f}".format(time.time()))#Record time in epoch UTC
 
-
-flag=False
-if(not path.exists(fName)):#prints the header if the file does not exist
-    flag=True
-
 with open(fName,'a') as f: #open up the file in append mode
-    if(flag):print("Temp,Light,Audio,AudioEnv,Time",file=f)#print header
-
     print(tmp, file=f)#print this in the file
     f.close()
 
