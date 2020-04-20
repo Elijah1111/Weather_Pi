@@ -17,7 +17,7 @@ Then setup the cron jobs.
 
 ### Crontab
 This project uses crontab to schedule and manage the project.
-The pi collects data every 5 minutes and stores it into the _data.csv file, and then uploads the file at Midnight UTC to the external server.
+The pi collects data every 5 minutes and stores it into the _data.csv file, and then uploads the file at Midnight to the external server.
 
 Open cron jobs in edit mode with: 
 
