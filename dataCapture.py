@@ -1,12 +1,15 @@
+#!/usr/bin/python3
 import time
 import adcUtil as adc
 from os import path
-#TODO edit anything with a TODO
 
+#TODO edit anything with a TODO
 #~~~~~~~~~~~~~~~~~~~~Assignment~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-location = "GOLDEN" #TODO Change me based on location
-fName = location+"_data.csv" #set up the file name 
+LOC = "GOLDEN" #TODO Change me based on location
+PATH = "/home/pi/Documents/capstone/"#TODO adjust to the path of your project
+fName = PATH+LOC+"_data.csv" #set up the file name 
+
 
 tChan = (0,0)#Channel 0, chip 0 Temperature
 lChan = (1,0)#Channel 1, chip 0 Light
