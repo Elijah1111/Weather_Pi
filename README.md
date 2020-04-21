@@ -28,7 +28,7 @@ crontab -e
 Add these lines to cron:
 ```
 */5 * * * * PATH/dataCapture.py
-* 0 * * * PATH/upload.py
+0 0 * * * PATH/upload.py
 ```
 Where PATH is the path to the project.
 For example:
