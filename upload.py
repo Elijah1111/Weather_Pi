@@ -16,7 +16,7 @@ try:
 except IndexError:#no file found
     print("Error")
     with open(eName,'a') as f:
-        print("Error no File Found for Upload, Exiting. Time: %i" %time.time(),file=f)
+        print("Error no File Found for Upload: Exiting. Time: %i" %time.time(),file=f)
         f.close()
     exit( -1)#error
 
@@ -35,7 +35,7 @@ if(con.rec()=='200'):#All clear condition
     print("Data Uploaded and received correctly")
     os.remove(fName)#remove the file from the client
 else:
-    with open(eName, 'a'):
+    with open(eName, 'a') as f:
         print("Error Uploading: Keeping Data. Time: %i"%time.time(),file=f)#Serever did not recive the data, keeping data
         f.close()
 con.close()
