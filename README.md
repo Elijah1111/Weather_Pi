@@ -10,8 +10,7 @@ Edit LOC in the dataCapture.py and PATH in both upload.py and dataCapture.py, Th
 
 Make upload.py and dataCapture.py executable with chmod.
 ```
-chmod 777 upload.py
-chmod 777 dataCapture.py
+chmod +x upload.py dataCapture.py
 ```
 Then setup the cron jobs.
 
