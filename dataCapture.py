@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import time
-import adcUtil as adc
+import modADC as adc #import the modified adc code 
 from os import path
 
 #TODO edit anything with a TODO
