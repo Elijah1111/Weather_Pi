@@ -7,9 +7,12 @@
 import geopandas as gpd
 from shapely.geometry import Point, Polygon
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcol
+import matplotlib.cm as cm
 import pandas as pd
 import numpy as np
-
+import glob
+from datetime import datetime
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!! edit to include location dependency!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def get_color_data(start, end, data_file_name): #takes in data from file and maps colors on red-blue scale for coloring in future sections, only for one location  
     with open(data_file_name) as f:
@@ -28,7 +31,8 @@ def get_color_data(start, end, data_file_name): #takes in data from file and map
                 light = np.append(light,tmp[1])
                 audio = np.append(audio,tmp[2])
                 env   = np.append(env,tmp[3])
-                time  = np.append(time,tmp[4])
+                time   = np.append(time,tmp[4])
+                
         all_values = [temp,light,audio,env]
         blue = int(0x0000FF)#create 9 color bins of colors varing between red and blue
         red = int(0xFF0000)
@@ -38,10 +42,10 @@ def get_color_data(start, end, data_file_name): #takes in data from file and map
                 val_min = min(i) #find the min of the current array
                 val_range = val_max-val_min #create mapping between min and max values and create a corrisponding color array
                 step = val_range/1000#create 9 value bins
-                    for j in range(len(i)):
-                        for k in range(1000):
-                            if (kstep)+val_min-.0001 <= i[j] <= (k+1)step+val_min+.0001: #if value in bin k assign it to color bin k
-                                i[j] = blue+(br_step*k)#assign the color
+                for j in range(len(i)):
+                    for k in range(1000):
+                        if (((k*step)+val_min-.0001) <= i[j] and i[j] <= ((k+1)*step+val_min+.0001)): #if value in bin k assign it to color bin k
+                            i[j] = blue+(br_step*k)#assign the color
         f.close()#close the data file
     return [all_values,time]
                 
@@ -49,58 +53,63 @@ def get_color_data(start, end, data_file_name): #takes in data from file and map
 
 
 #color states of interest with the apporpriate color 
-def color_states(val_of_int,all_values,index,states = ["CO","NM","MN"]): #all_values as above, value of interest is temp, light, audio, and env, index is the positon in all_values
-    if val_of_int == 'temp':#convert val of interest into position in all_values 
-        val_of_int == 0
-    elif val_of_int == 'light':
-        val_of_int == 1
-    elif val_of_int == 'audio': 
-        val_of_int == 2
-    elif val_of_int == 'env':
-        val_of_int == 3
-        
+def color_states(val_of_int,all_values,index,t,states = ["CO","NM","MN"]): #all_values as above, value of interest is temp, light, audio, and env, index is the positon in all_values
     #load in shape file and convert to geopandas format
     PATH="/home/elijah/Documents/capstone/"#TODO change path
     usa = gpd.read_file(PATH+"usa_states.shp") # input path of "usa_states.shx"
     
-    fig, ax = plt.subplots(figsize=(30,30))
-
-    if 'HI' and 'AK' in states: #exclude hawaii and alaska when possible for clarity
-        usa[0,51].plot(ax=ax,alpha=0.3)
-    elif 'HI' in states:
-        usa[0,50].plot(ax=ax,alpha=0.3)
-    elif 'AK' in states:
-        usa[1,51].plot(ax=ax,alpha=0.3)
+    fig, ax = plt.subplots(figsize=(5,5),dpi=150)
+    s=""#empty string
+    if val_of_int == 0:
+        s = "Temprature" 
+    if val_of_int == 1:
+        s = "Light"
+    if val_of_int == 2:
+        s = "Audio"
+    if val_of_int == 3:
+        s = "Audio Envelope"
+    plt.title(s + ' ' + str(datetime.fromtimestamp(t)))
     for n in states: #plot data over selected states with correct color
         if n == 'CO':
-            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = '#' +str(hex(int(co_colors[val_of_int][index])))[2:])
+            val = str(hex(int(all_values[0][val_of_int][index])))[2:].zfill(6)
+            print(n + " VAL: " + val)
+            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = '#' + val)
         elif n == 'NM':
-            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = '#' +str(hex(int(nm_colors[val_of_int][index])))[2:])
+            val = str(hex(int(all_values[1][val_of_int][index])))[2:].zfill(6)
+            print(n + " VAL: " + val)
+            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = '#' + val)
         elif n == 'MN':
-            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color ='#' + str(hex(int(mn_colors[val_of_int][index])))[2:])
-    
-#animates plot
-#def animate_data(start,end,data_file_name, states = ["CO","NM","MN"]):  
+            val = str(hex(int(all_values[2][val_of_int][index])))[2:].zfill(6)
+            print(n + " VAL: " + val)
+            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color ='#' + val)
+    plt.colorbar(fig) 
+    fig.savefig(PATH+"image/"+str(val_of_int)+'_'+str(index)+".png")#save figure
+    print("Image saved")
+    plt.close(fig)
 
-temp = np.empty(0)
-light = np.empty(0)
-audio = np.empty(0)
-env = np.empty(0)
+
 
 start = 1587585602#TODO
-end = 1587841802 #last time where data was clean
-data_file_name = "GOLDEN_data.csv"
+end = 1587844502#last time where data was clean
 
+tmp=glob.glob("*.csv")
+print(tmp)
 
-tmp = get_color_data(start, end, data_file_name) #get time values
+mn_colors = get_color_data(start, end, tmp[0])[0] # get the data for mn
 
-time_ = tmp[1]
+val = get_color_data(start, end, tmp[1]) # get the data for nm
 
-co_colors = tmp[0]#get values for all the states 
-nm_colors = tmp[0]
-mn_colors = tmp[0]
+nm_colors = val[0]
 
-print(co_colors[0])
-#color_states(1,co_colors[0],1)  
+co_colors = get_color_data(start, end, tmp[2])[0] # get the data for co
+del tmp # remove tmp free up space 
+vals= [co_colors, mn_colors, nm_colors]
 
-#plt.show()
+del mn_colors
+del co_colors
+
+for i in range(len(nm_colors)):
+    for j in range(0,nm_colors[i].size,19):
+        color_states(i,vals,j,val[1][j])
+
+print("Finished saving files")
