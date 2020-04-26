@@ -7,21 +7,22 @@
 import geopandas as gpd
 from shapely.geometry import Point, Polygon
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcol
-import matplotlib.cm as cm
 import pandas as pd
 import numpy as np
 import glob
 from datetime import datetime
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!! edit to include location dependency!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 def get_color_data(start, end, data_file_name): #takes in data from file and maps colors on red-blue scale for coloring in future sections, only for one location  
     with open(data_file_name) as f:
         lines = f.readlines() #get data from file
+        
+
         temp = np.empty(0)
         light = np.empty(0)
         audio = np.empty(0)
         env = np.empty(0)
         time = np.empty(0)
+        
         for i in range(len(lines)):
             tmpy = lines[i].split(',')
             tmp = (float(tmpy[0]),float(tmpy[1]),float(tmpy[2]),float(tmpy[3]),int(tmpy[4].rstrip()))
@@ -37,11 +38,13 @@ def get_color_data(start, end, data_file_name): #takes in data from file and map
         blue = int(0x0000FF)#create 9 color bins of colors varing between red and blue
         red = int(0xFF0000)
         br_step = int((red-blue)/1000)
+        
         for i in all_values:
                 val_max = max(i) #find the max of the current array 
                 val_min = min(i) #find the min of the current array
                 val_range = val_max-val_min #create mapping between min and max values and create a corrisponding color array
                 step = val_range/1000#create 9 value bins
+                
                 for j in range(len(i)):
                     for k in range(1000):
                         if (((k*step)+val_min-.0001) <= i[j] and i[j] <= ((k+1)*step+val_min+.0001)): #if value in bin k assign it to color bin k
@@ -59,7 +62,8 @@ def color_states(val_of_int,all_values,index,t,states = ["CO","NM","MN"]): #all_
     usa = gpd.read_file(PATH+"usa_states.shp") # input path of "usa_states.shx"
     
     fig, ax = plt.subplots(figsize=(5,5),dpi=150)
-    s=""#empty string
+    
+    s=""#title string
     if val_of_int == 0:
         s = "Temprature" 
     if val_of_int == 1:
@@ -68,7 +72,9 @@ def color_states(val_of_int,all_values,index,t,states = ["CO","NM","MN"]): #all_
         s = "Audio"
     if val_of_int == 3:
         s = "Audio Envelope"
+
     plt.title(s + ' ' + str(datetime.fromtimestamp(t)))
+    
     for n in states: #plot data over selected states with correct color
         if n == 'CO':
             val = str(hex(int(all_values[0][val_of_int][index])))[2:].zfill(6)
@@ -82,10 +88,11 @@ def color_states(val_of_int,all_values,index,t,states = ["CO","NM","MN"]): #all_
             val = str(hex(int(all_values[2][val_of_int][index])))[2:].zfill(6)
             print(n + " VAL: " + val)
             usa[usa.state_abbr == f'{n}'].plot(ax=ax,color ='#' + val)
+    
     plt.colorbar(fig) 
     fig.savefig(PATH+"image/"+str(val_of_int)+'_'+str(index)+".png")#save figure
     print("Image saved")
-    plt.close(fig)
+    plt.close(fig)#close the figure save space
 
 
 
@@ -97,12 +104,13 @@ print(tmp)
 
 mn_colors = get_color_data(start, end, tmp[0])[0] # get the data for mn
 
-val = get_color_data(start, end, tmp[1]) # get the data for nm
+val = get_color_data(start, end, tmp[1]) # get the data for nm and the time
 
 nm_colors = val[0]
 
 co_colors = get_color_data(start, end, tmp[2])[0] # get the data for co
 del tmp # remove tmp free up space 
+
 vals= [co_colors, mn_colors, nm_colors]
 
 del mn_colors
