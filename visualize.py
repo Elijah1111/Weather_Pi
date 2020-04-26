@@ -29,25 +29,19 @@ def get_color_data(start, end, data_file_name): #takes in data from file and map
                 audio = np.append(audio,tmp[2])
                 env   = np.append(env,tmp[3])
                 time  = np.append(time,tmp[4])
-
-        all_values = [temp,light,audio,env] 
+        all_values = [temp,light,audio,env]
         blue = int(0x0000FF)#create 9 color bins of colors varing between red and blue
         red = int(0xFF0000)
         br_step = int((red-blue)/1000)
         for i in all_values:
-            val_max = np.amax(i) #find the max of the current array 
-            val_min = np.amin(i) #find the min of the current array
-            val_range = val_max-val_min #create mapping between min and max values and create a corrisponding color array
-            step = val_range/1000#create 9 value bins
-            for j in range(i.size):
-                for k in range(1000):
-                    if (k*step)+val_min <= i[j] <= (k+1)*step+val_min: #if value in bin k assign it to color bin k
-                        i[j] = blue+(br_step*k)#assign the color
-                    elif i[j] < val_min: #in case of machine error
-                        i[j] = blue
-                    elif i[j] > val_max:
-                        #print("MAKING MAX: " + str(i[j]) + " MAX IS: " + str(val_max))
-                        i[j] = red
+                val_max = max(i) #find the max of the current array 
+                val_min = min(i) #find the min of the current array
+                val_range = val_max-val_min #create mapping between min and max values and create a corrisponding color array
+                step = val_range/1000#create 9 value bins
+                    for j in range(len(i)):
+                        for k in range(1000):
+                            if (kstep)+val_min-.0001 <= i[j] <= (k+1)step+val_min+.0001: #if value in bin k assign it to color bin k
+                                i[j] = blue+(br_step*k)#assign the color
         f.close()#close the data file
     return [all_values,time]
                 
