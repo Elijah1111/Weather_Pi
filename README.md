@@ -4,7 +4,7 @@ This is the various code for the Weather Pi, a "weather" station Raspberry Pi. T
 This project is for the Colorado School of Mines CSCI 250 Python Based Computing course.
 
 # Setup
-Download the .py files.
+Download the .py files.Make sure the python packages listed below are installed.
 
 Edit LOC in the dataCapture.py and PATH in both upload.py and dataCapture.py, They are marked with a TODO.
 
