@@ -35,6 +35,7 @@ For example:
 */5 * * * * /home/pi/Documents/capstone/dataCapture.py
 ```
 These cron jobs run the script every 5 minutes and the upload script at midnight.
+
 # Examples/Output
 Here is an example of the output csv file.
 
@@ -47,7 +48,15 @@ Temp,Light,Audio,AudioEnv,Time
 ```
 Once the data is collected the visualization script can be used to generate plots of the data. These plots can be used to show trends in the sensors of the pi.
 
+# Python Packages
+### For Visualization 
+[GeoPandas](https://geopandas.org/)
 
+[Pandas](https://pandas.pydata.org/pandas-docs/stable/)
+
+[MatPlotLib](https://matplotlib.org/3.2.1/contents.html)
+### For Proccessing
+[Numpy](https://matplotlib.org/3.2.1/contents.html)
 # Credit
 The initial adcUtil script was written by the course instructors, I modified it to be able to use 2 ADC chips on the Raspberry Pi, course web-page available [here](http://cs-courses.mines.edu/csci250/).
 
