@@ -56,7 +56,7 @@ Once the data is collected the visualization script can be used to generate plot
 
 [MatPlotLib](https://matplotlib.org/3.2.1/contents.html)
 ### For Proccessing
-[Numpy](https://matplotlib.org/3.2.1/contents.html)
+[Numpy](https://numpy.org/doc/)
 # Credit
 The initial adcUtil script was written by the course instructors, I modified it to be able to use 2 ADC chips on the Raspberry Pi, course web-page available [here](http://cs-courses.mines.edu/csci250/).
 
