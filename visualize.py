@@ -7,6 +7,8 @@
 import geopandas as gpd
 from shapely.geometry import Point, Polygon
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcol
+import matplotlib.cm as cm
 import pandas as pd
 import numpy as np
 import glob
@@ -35,20 +37,7 @@ def get_color_data(start, end, data_file_name): #takes in data from file and map
                 time   = np.append(time,tmp[4])
                 
         all_values = [temp,light,audio,env]
-        blue = int(0x0000FF)#create 9 color bins of colors varing between red and blue
-        red = int(0xFF0000)
-        br_step = int((red-blue)/1000)
         
-        for i in all_values:
-                val_max = max(i) #find the max of the current array 
-                val_min = min(i) #find the min of the current array
-                val_range = val_max-val_min #create mapping between min and max values and create a corrisponding color array
-                step = val_range/1000#create 9 value bins
-                
-                for j in range(len(i)):
-                    for k in range(1000):
-                        if (((k*step)+val_min-.0001) <= i[j] and i[j] <= ((k+1)*step+val_min+.0001)): #if value in bin k assign it to color bin k
-                            i[j] = blue+(br_step*k)#assign the color
         f.close()#close the data file
     return [all_values,time]
                 
@@ -61,11 +50,29 @@ def color_states(val_of_int,all_values,index,t,states = ["CO","NM","MN"]): #all_
     PATH="/home/elijah/Documents/capstone/"#TODO change path
     usa = gpd.read_file(PATH+"usa_states.shp") # input path of "usa_states.shx"
     
+    # Make a user-defined colormap.
+    cm1 = mcol.LinearSegmentedColormap.from_list("MyCmapName",["r","b"])
+    
+    maxVal = all_values[0][val_of_int][0]#set max and min floaters
+    minVal = maxVal
+    
+    for i in all_values:#grab states max and min
+        tmp = i[val_of_int].max()
+        if(tmp > maxVal):
+            maxVal = tmp
+        tmp = i[val_of_int].min()
+        if(tmp < minVal):
+            minVal = tmp
+
+    cnorm = mcol.Normalize(vmin=minVal,vmax=maxVal)#setup color noramalization
+    cpick = cm.ScalarMappable(norm=cnorm,cmap=cm1)
+    cpick.set_array([])
+    
     fig, ax = plt.subplots(figsize=(5,5),dpi=150)
     
     s=""#title string
     if val_of_int == 0:
-        s = "Temprature" 
+        s = "Temperature" 
     if val_of_int == 1:
         s = "Light"
     if val_of_int == 2:
@@ -77,19 +84,19 @@ def color_states(val_of_int,all_values,index,t,states = ["CO","NM","MN"]): #all_
     
     for n in states: #plot data over selected states with correct color
         if n == 'CO':
-            val = str(hex(int(all_values[0][val_of_int][index])))[2:].zfill(6)
-            print(n + " VAL: " + val)
-            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = '#' + val)
+            val = all_values[0][val_of_int][index]
+            print(n + " VAL: " + str(val))
+            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = cpick.to_rgba(val))
         elif n == 'NM':
-            val = str(hex(int(all_values[1][val_of_int][index])))[2:].zfill(6)
-            print(n + " VAL: " + val)
-            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = '#' + val)
+            val = all_values[0][val_of_int][index]
+            print(n + " VAL: " + str(val))
+            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = cpick.to_rgba(val))
         elif n == 'MN':
-            val = str(hex(int(all_values[2][val_of_int][index])))[2:].zfill(6)
-            print(n + " VAL: " + val)
-            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color ='#' + val)
-    
-    plt.colorbar(fig) 
+            val = all_values[0][val_of_int][index]
+            print(n + " VAL: " + str(val))
+            usa[usa.state_abbr == f'{n}'].plot(ax=ax,color = cpick.to_rgba(val))
+   
+    plt.colorbar(cpick)
     fig.savefig(PATH+"image/"+str(val_of_int)+'_'+str(index)+".png")#save figure
     print("Image saved")
     plt.close(fig)#close the figure save space
