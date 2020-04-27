@@ -45,6 +45,7 @@ Temp,Light,Audio,AudioEnv,Time
 16.452,1.068,0.015,0.045,1587152619
 16.774,1.068,0.002,0.042,1587152619
 ```
+Once the data is collected the visualization script can be used to generate plots of the data. These plots can be used to show trends in the sensors of the pi.
 
 
 # Credit
